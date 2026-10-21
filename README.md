@@ -18,10 +18,10 @@ This list grows whenever a prompt becomes a habit. See [Turning a prompt into a 
 Run this in the root of the project where you want the skills. It installs every skill in this repo into that project only; nothing is installed globally.
 
 ```bash
-npx skills add hell0-fri3nd/agent-workflow --skill '*'
+npx skills add hell0-fri3nd/agent-workflow --skill '*' -a claude-code -a codex --copy -y
 ```
 
-This uses the open-source [`skills`](https://github.com/vercel-labs/skills) installer, which needs Node 22 or newer. It asks which agent tools you use (skip the question with `-a claude-code -a codex ...`), then creates:
+This uses the open-source [`skills`](https://github.com/vercel-labs/skills) installer, which needs Node 22 or newer. `-a claude-code` writes `.claude/skills/`, which is the only place Claude Code looks, so leave it in or `/commit` won't appear. `-a codex` writes `.agents/skills/`, which Codex, Cline, OpenCode, Cursor, Copilot and Gemini CLI all read. The result:
 
 ```
 your-project/
@@ -33,14 +33,14 @@ your-project/
 Useful options:
 
 ```bash
-npx skills add hell0-fri3nd/agent-workflow --list                                 # see every skill
-npx skills add hell0-fri3nd/agent-workflow --skill '*' -a claude-code -a codex -y  # just these tools, no prompts
-npx skills add hell0-fri3nd/agent-workflow --skill '*' --copy                     # real copies instead of symlinks
-npx skills update                                                 # pull newer versions
-npx skills remove commit                                          # uninstall one
+npx skills add hell0-fri3nd/agent-workflow --list   # see every skill
+npx skills update                                   # pull newer versions after I push changes
+npx skills remove commit                            # uninstall one
 ```
 
-Use `--copy` if you will commit the installed skills to the project. By default `.claude/skills/` holds symlinks with absolute paths, and those break for anyone who clones the repo.
+`--copy` writes real folders. Without it, `.claude/skills/` holds symlinks with absolute paths, which break for anyone who clones the project.
+
+After installing, run `/reload-plugins` in Claude Code (or start a new session) so the new `.claude/skills/` folder is picked up.
 
 Avoid the installer's `--all` flag: it also targets every agent tool it knows, which adds around 50 hidden folders (`.windsurf/`, `.roo/`, `.kiro/` ...) to your project.
 
@@ -65,7 +65,7 @@ claude plugin marketplace add hell0-fri3nd/agent-workflow --scope project
 claude plugin install agent-workflow@agent-workflow --scope project
 ```
 
-This records the plugin in the project's `.claude/settings.json` instead of creating skill folders. Every skill comes with it, called as `/agent-workflow:commit` and so on.
+This records the plugin in the project's `.claude/settings.json` instead of creating skill folders. Every skill comes with it, called as `/agent-workflow:commit` and so on. If you'd rather type plain `/commit`, use the `npx skills add` install above instead.
 
 ## Layout
 
@@ -81,6 +81,18 @@ templates/skill-template/
 ```
 
 `.agents/skills/` is the single source of truth. Don't keep hand-edited copies anywhere else in this repo.
+
+To use the skills as `/commit`, `/system-version` while working on this repo in Claude Code, link `.claude/skills` to them once after cloning (the link is gitignored):
+
+```bash
+# Windows (PowerShell, no admin needed)
+New-Item -ItemType Junction -Path .claude\skills -Target .agents\skills
+
+# macOS / Linux
+mkdir -p .claude && ln -s ../.agents/skills .claude/skills
+```
+
+Then run `/reload-plugins` in Claude Code, or start a new session.
 
 ## Turning a prompt into a skill
 
