@@ -1,0 +1,18 @@
+{
+  "name": "agent-workflow",
+  "description": "My day-to-day workflow prompts, packaged as reusable agent skills.",
+  "owner": {
+    "name": "hell0-fri3nd"
+  },
+  "plugins": [
+    {
+      "name": "agent-workflow",
+      "source": "./",
+      "description": "My day-to-day workflow prompts, packaged as reusable agent skills.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/hell0-fri3nd/agent-workflow",
+      "skills": "./.agents/skills/"
+    }
+  ]
+}
