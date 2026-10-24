@@ -1,3 +1,6 @@
 .claude/settings.local.json
 # Local link to .agents/skills so Claude Code shows /commit etc. in this repo
 .claude/skills
+
+# Written when installing skills into this repo itself; hides the skills from the installer if committed
+skills-lock.json
