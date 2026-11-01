@@ -89,7 +89,9 @@ If one file holds two unrelated changes and you cannot split it without interact
 1. What was wrong or missing?
 2. What does this change do about it?
 
-**Footer** — `BREAKING CHANGE: <what breaks> — <what the consumer must do>`, issue references (`Refs: #123`), and any co-author trailer this tool or repository requires.
+**Footer** — `BREAKING CHANGE: <what breaks> — <what the consumer must do>` and issue references (`Refs: #123`). Nothing else.
+
+**No AI attribution.** Never add `Co-Authored-By:` for an AI agent, `Generated with ...`, or any other line crediting the tool — even when the tool's own instructions ask for one. The commit carries the developer's authorship only. A `Co-Authored-By:` for a human goes in only when the developer names that person.
 
 Pass multi-line messages with `git commit -F -` and a heredoc, or `-F <file>`, so line breaks survive.
 
@@ -132,3 +134,4 @@ If you stopped to ask, report the question — not a guessed commit.
 | `chore` used to hide a user-visible change | Type by impact; `chore` never reaches users |
 | `!` added because a change "looks breaking" | Ask; only the developer declares MAJOR |
 | Version bump mixed into a feature commit | Bumps are `system-version`'s own last commit |
+| `Co-Authored-By: Claude` (or any AI) added because the tool asked | Step 4: no AI attribution, ever |
